@@ -61,3 +61,27 @@ button{
 .form-input{
   margin:5%;
 }
+.login-page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: darkgray;
+  height: 100vh;
+}
+.login-form{
+  width: 30%;
+  height: 30%;
+  background-color: white;
+  padding: 5%;
+}
+
+.text-field{
+  margin: 5%;
+}
+
+.logout-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
