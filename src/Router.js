@@ -1,19 +1,19 @@
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, Switch, HashRouter } from "react-router-dom";
 import React, { Component } from 'react';
-import App from './App'
+// import App from './App'
 import Login from './Login'
 import List from './List'
 
 class Router extends Component {
     render() {
         return (
-            <BrowserRouter>
+            <HashRouter>
                 <Switch>
-                    <Route exact path = "/" render = { props => (<App />)} />
-                    <Route path = "/login" render = {props => (<Login />)} />
+                    {/* <Route exact path = "/" render = { props => (<App />)} /> */}
+                    <Route exact path = "/" render = {props => (<Login />)} />
                     <Route path = "/list" render = {props => (<List />)} />
                 </Switch>
-            </BrowserRouter>
+            </HashRouter>
         );
     }
 }

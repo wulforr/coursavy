@@ -11,6 +11,11 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import FirstPage from "@material-ui/icons/FirstPage";
 import LastPage from "@material-ui/icons/LastPage";
 import CustomDialog from './CustomDialog'
+import cookie from 'react-cookies'
+import Button from "@material-ui/core/Button";
+import { withRouter } from 'react-router-dom';
+
+
 
 
 const tableIcons = {
@@ -70,6 +75,7 @@ class List extends Component {
       data: [],
       dataloaded: false,
       isopen: false,
+      id:'',
       firstname: '',
       lastname:'',
       email:'',
@@ -81,6 +87,8 @@ class List extends Component {
     };
   }
   componentDidMount() {
+    if(!cookie.load('token'))
+      this.props.history.push('/')
     this.getalluser();
   }
   getalluser = () => {
@@ -112,19 +120,19 @@ class List extends Component {
   }
   edituser = async() => {
     console.log('editing finished')
+    let url = "https://5df923abe9f79e0014b6ae77.mockapi.io/api/users/" + this.state.id
     let genderval = true;
     if(this.state.gender === "female")
       genderval=false
-    let dat = await axios
-    .put("https://5df923abe9f79e0014b6ae77.mockapi.io/api/users/1", {
-      firstName:this.state.firstname,
-      lastName:this.state.lastname,
-      email:this.state.email,
-      dob:this.state.dob,
-      mobileNumber:this.state.number,
-      avatar:this.state.avatar,
-      gender:genderval
-    })
+    let dat = await axios.put( url , {
+        firstName:this.state.firstname,
+        lastName:this.state.lastname,
+        email:this.state.email,
+        dob:this.state.dob,
+        mobileNumber:this.state.number,
+        avatar:this.state.avatar,
+        gender:genderval
+      })
     // .then(res => console.log(res,"edit fin"))
     // .catch(err => console.log(err));
     console.log(dat,"edit done")
@@ -148,6 +156,14 @@ class List extends Component {
     else
     this.setState({[field]: event.target.value})
   }
+  handlelogout = () => {
+    cookie.remove('token',{path:'/'})
+    this.props.history.push('/')
+    // this.setState({token:undefined})
+}
+  handleDelete = async() => {
+
+  }
 
   render() {
     console.log(this.state);
@@ -155,7 +171,12 @@ class List extends Component {
       <div className="listview">
         <div className="list-div list-title">All Users</div>
         <div className="list-div list-add">
-          <button onClick={this.addUser}>Add user</button>
+        <button onClick={this.addUser}>Add user</button>
+          <Button  variant="outlined" onClick={this.handlelogout} color="secondary">
+                  Logout
+                </Button>
+
+          
           <div>
             <CustomDialog  state={this.state} handleOnChange={this.handleOnChange} handleClose={this.handleClose} addnewuser={this.addnewuser} editing={this.state.editing} edituser={this.edituser} />
           </div>
@@ -177,6 +198,7 @@ class List extends Component {
                   if(rowData.gender===false)
                     genderval = "female"
                   this.setState({
+                    id:rowData.id,
                     firstname:rowData.firstName,
                     lastname:rowData.lastName,
                     number:rowData.mobileNumber,
@@ -194,7 +216,12 @@ class List extends Component {
               {
                 icon: DeleteIcon,
                 tootltip: "delete user",
-                onClick: (event, rowData) => console.log(rowData)
+                onClick: (event, rowData) => {
+                  let url = "https://5df923abe9f79e0014b6ae77.mockapi.io/api/users/" + rowData.id
+                    axios.delete(url)
+                    .then(res => {this.getalluser()})
+                  }
+                
               }
             ]}
           />
@@ -205,4 +232,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default withRouter(List);

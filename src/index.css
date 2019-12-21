@@ -45,6 +45,10 @@ button{
   padding: 1% 2%;
   border-radius: 4px;
   cursor: pointer;
+  margin-right: 2%;
+}
+button:hover{
+  background-color: #009A9A;
 }
 
 .table{
@@ -72,7 +76,7 @@ button{
   width: 30%;
   height: 30%;
   background-color: white;
-  padding: 5%;
+  padding: 0% 8% 15% 8%;
 }
 
 .text-field{
@@ -84,4 +88,12 @@ button{
   justify-content: center;
   align-items: center;
   width: 100%;
+}
+.login-btn{
+  margin-left:40%;
+}
+h1{
+  text-align: center;
+  margin-bottom: 17%;
+  font-size: 3.5em;
 }

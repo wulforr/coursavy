@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import cookie from 'react-cookies'
 import axios from 'axios'
-import moment from 'moment';
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { withRouter } from 'react-router-dom';
 
 
 
@@ -17,6 +17,12 @@ class Login extends Component {
             // cookieloaded:false
         }
     }
+    componentDidMount() {
+        // console.log(cookie.load('token'))
+        if(cookie.load('token'))
+            this.props.history.push('/list')
+    }
+    
 
     handleOnChange = field => event => {
         console.log(event,field)
@@ -35,6 +41,7 @@ class Login extends Component {
             let d = new Date();
             d.setTime(d.getTime() + (30*60*1000));
             cookie.save('token',res.data.token, {path:'/', expires:d})
+            this.props.history.push('/list')
             // this.setState({cookieloaded:true})
 
         })
@@ -65,17 +72,18 @@ class Login extends Component {
            {/* Login  */}
            {/* <button onClick={this.login}>login</button>     */}
            <div className="text-field">
+               <h1>Login</h1>
            <TextField
                   id="name"
                   label="Email"
                   className="text-field"
                   value={this.state.email}
+                //   inputProps={{style: {fontSize: 20}}} // font size of input text
                   onChange={this.handleOnChange("email")}
                   fullWidth
                   helperText="Test email - eve.holt@reqres.in"
                   variant="outlined"
                   />
-                  test
                   </div>
             <div className="text-field">
             <TextField
@@ -90,9 +98,11 @@ class Login extends Component {
                   variant="outlined"
                   />
                   </div>
-            <Button  variant="outlined" onClick={this.handlelogin} color="primary">
+                  <div className="login-btn">
+            <Button  variant="contained" onClick={this.handlelogin} color="primary">
                   Login
                 </Button>
+                </div>
                 </div>
             </div>
         );
@@ -100,4 +110,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default withRouter(Login);
